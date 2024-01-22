@@ -8,4 +8,4 @@ class VendingMachine:
         self.credit += amount
 
     def credit_checker(self, price):
-        return self.credit >= price
+        pass
