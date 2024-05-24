@@ -57,38 +57,72 @@ class TestGenerateMultiples:
 class TestSecureFunction:
 
     @pytest.mark.skip
-    @pytest.mark.it('requires password prompt for decorated function')
-    def test_new_function(self, func_no_args):
-        with patch('builtins.input', return_value='secretpassw0rd') as p:
-            func_no_args()
-            p.assert_called_once()
+    @pytest.mark.it('function with no args invokes with correct password')
+    def test_no_args(self):
+
+        @secure_func('password')
+        def func_no_args():
+            return 'Function ran successfully!'
+
+        result = func_no_args('password')
+        assert result == 'Function ran successfully!'
 
     @pytest.mark.skip
-    @pytest.mark.it('function with no args executes correctly with password')
-    def test_no_args(self, func_no_args):
-        with patch('builtins.input', return_value='secretpassw0rd'):
-            result = func_no_args()
-            assert result == 'Wibble'
+    @pytest.mark.it('function with no args errors on incorrect password')
+    def test_no_args_bad_pwd(self):
+
+        @secure_func('password')
+        def func_no_args():
+            return 'Function ran successfully!'
+
+        result = func_no_args('eggy_bread')
+
+        assert result == 'Sorry, your password is incorrect!'
 
     @pytest.mark.skip
-    @pytest.mark.it('function with no args issues error on incorrect password')
-    def test_no_args_bad_pwd(self, func_no_args):
-        with patch('builtins.input', return_value='wrongpassw0rd'):
-            result = func_no_args()
-            assert result == 'Sorry your password is incorrect!'
+    @pytest.mark.it('function with args invokes with correct password')
+    def test_args(self):
+
+        @secure_func('P4s5w0rd!!!')
+        def func_with_args(*args):
+            return list(args)
+
+        result = func_with_args('P4s5w0rd!!!', 1, 2, 3)
+
+        assert result == [1, 2, 3]
 
     @pytest.mark.skip
-    @pytest.mark.it('function with args executes correctly with password')
-    def test_args(self, func_with_args):
-        with patch('builtins.input', return_value='secretpassw0rd'):
-            result1 = func_with_args('wibble')
-            assert result1 == 'WIBBLE!'
-            result2 = func_with_args('wobble', exclaim=False)
-            assert result2 == 'WOBBLE'
+    @pytest.mark.it('function with args errors on incorrect password')
+    def test_args_bas_pwd(self):
+
+        @secure_func('P4s5w0rd!!!')
+        def func_with_args(*args):
+            return list(args)
+
+        result = func_with_args('Th15_1s_WR0ng', 1, 2, 3)
+
+        assert result == 'Sorry, your password is incorrect!'
 
     @pytest.mark.skip
-    @pytest.mark.it('function with args issues error on incorrect password')
-    def test_args_bas_pwd(self, func_with_args):
-        with patch('builtins.input', return_value='wrongpassw0rd'):
-            result = func_with_args('wibble', exclaim=False)
-            assert result == 'Sorry your password is incorrect!'
+    @pytest.mark.it('function with args & kwargs invokes on correct password')
+    def test_args_and_kwargs(self):
+
+        @secure_func('P4s5w0rd!')
+        def func_with_args_and_kwargs(*args, **kwargs):
+            return (list(args), kwargs)
+
+        result = func_with_args_and_kwargs('P4s5w0rd!', 1, 2, 3, invoked=True)
+
+        assert result == ([1, 2, 3], {"invoked": True})
+
+    @pytest.mark.skip
+    @pytest.mark.it('function with args & kwargs errors on incorrect password')
+    def test_args_and_kwargs_bad_pwd(self):
+
+        @secure_func('P4s5w0rd!!!')
+        def func_with_args_and_kwargs(*args, **kwargs):
+            return (list(args), dict(kwargs))
+
+        result = func_with_args_and_kwargs('3ggy_bRe4d', 1, 2, invoked=False)
+
+        assert result == 'Sorry, your password is incorrect!'
