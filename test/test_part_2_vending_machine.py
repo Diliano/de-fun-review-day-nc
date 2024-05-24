@@ -1,9 +1,11 @@
 import pytest
 from src.part_2_vending_machine import VendingMachine
 
+
 @pytest.fixture(scope='function')
 def machine():
     return VendingMachine()
+
 
 @pytest.mark.describe('All Vending Machine Methods')
 class TestVendingMachine:
