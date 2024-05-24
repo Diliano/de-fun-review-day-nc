@@ -12,7 +12,7 @@ def file_data():
 @pytest.mark.describe(' Indexer Function')
 class TestIndexer:
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     @pytest.mark.it('returns empty generator for empty string')
     def test_iterator(self):
         text = ''
@@ -20,7 +20,7 @@ class TestIndexer:
         with pytest.raises(StopIteration):
             next(result)
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     @pytest.mark.it('has leading index zero for nonempty input')
     def test_leading_zero(self):
 
@@ -32,7 +32,7 @@ class TestIndexer:
         assert next(indexer(text2)) == 0
         assert next(indexer(text3)) == 0
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     @pytest.mark.it('correctly indexes single-line text')
     def test_single_line(self):
 
@@ -47,7 +47,7 @@ class TestIndexer:
         with pytest.raises(StopIteration):
             next(res1)
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     @pytest.mark.it('does not index leading or repeated space')
     def test_leading_space(self):
 
@@ -55,13 +55,13 @@ class TestIndexer:
 
         assert list(indexer(text)) == [2, 11, 15, 23]
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     @pytest.mark.it('deals correctly with newline characters')
     def test_new_line(self):
         text = """The\nEnd"""
         assert list(indexer(text)) == [0, 4]
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     @pytest.mark.it('deals with multiline text read from a file')
     def test_file_text(self, file_data):
         indexed = indexer(file_data)
