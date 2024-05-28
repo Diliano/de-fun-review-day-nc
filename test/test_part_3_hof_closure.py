@@ -3,26 +3,6 @@ from src.part_3_hof_closure import generate_multiples, secure_func
 from types import FunctionType
 
 
-@pytest.fixture(scope='function')
-def func_no_args():
-
-    @secure_func('secretpassw0rd')
-    def secret_word():
-        return 'Wibble'
-
-    return secret_word
-
-
-@pytest.fixture(scope='function')
-def func_with_args():
-
-    @secure_func('secretpassw0rd')
-    def upperify(word, exclaim=True):
-        return word.upper() + '!' if exclaim else word.upper()
-
-    return upperify
-
-
 @pytest.mark.describe('Generate Multiples')
 class TestGenerateMultiples:
 
