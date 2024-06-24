@@ -1,5 +1,5 @@
 import pytest
-from src.part_3_hof_closure import generate_multiples, secure_func
+from src.part_3_hof_closure import generate_multiples, capitaliser, secure_func
 from types import FunctionType
 
 
@@ -32,6 +32,64 @@ class TestGenerateMultiples:
         assert mults_5(7) == [5, 10, 15, 20, 25, 30, 35]
         mults_7 = generate_multiples(7)
         assert mults_7(6) == [7, 14, 21, 28, 35, 42]
+
+
+@pytest.mark.describe('Capitaliser')
+class TestCapitaliser:
+
+    @pytest.mark.skip
+    @pytest.mark.it('Capitaliser returns a function')
+    def test_returns_function(self):
+        def example_func():
+            pass
+
+        result = capitaliser(example_func)
+
+        assert isinstance(result, FunctionType)
+
+    @pytest.mark.skip
+    @pytest.mark.it('Decorated function returns a capitalised string result')
+    def test_returns_capitalised_strings(self):
+        def example_func():
+            return 'hello world'
+
+        decorated_func = capitaliser(example_func)
+        result = decorated_func()
+
+        assert result == 'HELLO WORLD'
+
+    @pytest.mark.skip
+    @pytest.mark.it('Decorated function returns an unchanged integer result')
+    def test_returns_int_unchanged(self):
+        def example_func():
+            return 14
+
+        decorated_func = capitaliser(example_func)
+        result = decorated_func()
+
+        assert result == 14
+    
+    @pytest.mark.skip
+    @pytest.mark.it('Decorated function returns an unchanged boolean result')
+    def test_returns_boolean_unchanged(self):
+        def example_func():
+            return False
+
+        decorated_func = capitaliser(example_func)
+        result = decorated_func()
+
+        assert result == False
+
+    @pytest.mark.skip
+    @pytest.mark.it('Capitaliser functions as a decorator')
+    def test_acts_as_decorator(self):
+
+        @capitaliser
+        def example_func():
+            return "hey hey it's decorating time"
+
+        result = example_func()
+        assert result == "HEY HEY IT'S DECORATING TIME"
 
 
 @pytest.mark.describe('Secure Function')
