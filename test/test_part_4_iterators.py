@@ -2,43 +2,36 @@ from src.part_4_iterators import indexer, cool_cat
 import pytest
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def file_data():
-    with open('test/sonnet18.txt', 'r') as f:
+    with open("test/sonnet18.txt", "r") as f:
         text = f.read()
     return text
 
 
-@pytest.mark.describe(' Indexer Function')
 class TestIndexer:
-
     @pytest.mark.skip
-    @pytest.mark.it('returns empty generator for empty string')
-    def test_iterator(self):
-        text = ''
+    def test_returns_empty_generator_for_empty_string(self):
+        text = ""
         result = indexer(text)
         with pytest.raises(StopIteration):
             next(result)
 
     @pytest.mark.skip
-    @pytest.mark.it('has leading index zero for nonempty input')
-    def test_leading_zero(self):
-
-        text1 = 'Hello'
-        text2 = 'Hello Dolly'
-        text3 = 'The moon shines bright. In such a night as this,'
+    def test_has_leading_index_zero_for_non_empty_input(self):
+        text1 = "Hello"
+        text2 = "Hello Dolly"
+        text3 = "The moon shines bright. In such a night as this,"
 
         assert next(indexer(text1)) == 0
         assert next(indexer(text2)) == 0
         assert next(indexer(text3)) == 0
 
     @pytest.mark.skip
-    @pytest.mark.it('correctly indexes single-line text')
-    def test_single_line(self):
-
-        text1 = 'Hello'
-        text2 = 'Hello Dolly'
-        text3 = 'The moon shines bright. In such a night as this,'
+    def test_correctly_indexes_single_line_text(self):
+        text1 = "Hello"
+        text2 = "Hello Dolly"
+        text3 = "The moon shines bright. In such a night as this,"
         res1 = indexer(text1)
 
         assert next(res1) == 0
@@ -48,22 +41,18 @@ class TestIndexer:
             next(res1)
 
     @pytest.mark.skip
-    @pytest.mark.it('does not index leading or repeated space')
-    def test_leading_space(self):
-
+    def test_does_not_index_leading_or_repeated_space(self):
         text = "  Space,   the final   frontier  "
 
         assert list(indexer(text)) == [2, 11, 15, 23]
 
     @pytest.mark.skip
-    @pytest.mark.it('deals correctly with newline characters')
-    def test_new_line(self):
+    def test_deals_correctly_with_newline_characters(self):
         text = """The\nEnd"""
         assert list(indexer(text)) == [0, 4]
 
     @pytest.mark.skip
-    @pytest.mark.it('deals with multiline text read from a file')
-    def test_file_text(self, file_data):
+    def test_deals_correctly_with_multiline_text_read_from_file(self, file_data):
         indexed = indexer(file_data)
         listed_indexes = list(indexed)
         assert len(listed_indexes) == 114
@@ -71,57 +60,50 @@ class TestIndexer:
         assert listed_indexes[33] == 173
 
 
-@pytest.mark.describe('Cool Cat')
 class TestCoolCat:
-
     @pytest.mark.skip
-    @pytest.mark.it('works on single character strings')
-    def test_single_char(self):
-        result = cool_cat('A', 'B', 'C')
-        assert next(result) == 'A'
-        assert next(result) == 'B'
-        assert next(result) == 'C'
+    def test_works_on_single_character_strings(self):
+        result = cool_cat("A", "B", "C")
+        assert next(result) == "A"
+        assert next(result) == "B"
+        assert next(result) == "C"
         with pytest.raises(StopIteration):
             next(result)
 
     @pytest.mark.skip
-    @pytest.mark.it('works on single item lists')
-    def test_single_item_list(self):
-        result = cool_cat(['A'], ['B'], ['C'])
-        assert next(result) == 'A'
-        assert next(result) == 'B'
-        assert next(result) == 'C'
+    def test_works_on_single_item_lists(self):
+        result = cool_cat(["A"], ["B"], ["C"])
+        assert next(result) == "A"
+        assert next(result) == "B"
+        assert next(result) == "C"
         with pytest.raises(StopIteration):
             next(result)
 
     @pytest.mark.skip
-    @pytest.mark.it('works on single item dictionaries')
-    def test_single_item_dict(self):
-        result = cool_cat({'A': 1}, {'B': 2}, {'C': 3})
-        assert next(result) == ('A', 1)
-        assert next(result) == ('B', 2)
-        assert next(result) == ('C', 3)
+    def test_works_on_single_item_dicts(self):
+        result = cool_cat({"A": 1}, {"B": 2}, {"C": 3})
+        assert next(result) == ("A", 1)
+        assert next(result) == ("B", 2)
+        assert next(result) == ("C", 3)
         with pytest.raises(StopIteration):
             next(result)
 
     @pytest.mark.skip
-    @pytest.mark.it('works on multi-character strings')
-    def test_multi_char(self):
-        result = list(cool_cat('ABC', 'DEF', 'HIJ'))
-        assert result == ['A', 'B', 'C', 'D', 'E', 'F', 'H', 'I', 'J']
+    def test_works_on_multi_char_strings(self):
+        result = list(cool_cat("ABC", "DEF", "HIJ"))
+        assert result == ["A", "B", "C", "D", "E", "F", "H", "I", "J"]
 
     @pytest.mark.skip
-    @pytest.mark.it('works on multi-item lists')
-    def test_multi_item_list(self):
-        result = list(cool_cat(['A', 'B', 'C'], ['D', 'E'], ['F', 'G', 'H']))
-        assert result == ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    def test_works_on_multi_item_lists(self):
+        result = list(cool_cat(["A", "B", "C"], ["D", "E"], ["F", "G", "H"]))
+        assert result == ["A", "B", "C", "D", "E", "F", "G", "H"]
 
     @pytest.mark.skip
-    @pytest.mark.it('works on multi item dictionaries')
-    def test_multi_item_dict(self):
-        result = cool_cat({'A': 1, 'B': 2, 'C': 3}, {'x': 4},
-                          {'y': 96, 'z': 47}, {'P': 456})
-        expected = {'A': 1, 'B': 2, 'C': 3, 'x': 4, 'y': 96, 'z': 47, 'P': 456}
+    def test_works_on_multi_item_dicts(self):
+        result = cool_cat(
+            {"A": 1, "B": 2, "C": 3}, {"x": 4}, {"y": 96, "z": 47}, {"P": 456}
+        )
+        expected = {"A": 1, "B": 2, "C": 3, "x": 4, "y": 96, "z": 47, "P": 456}
         expected_iter = iter(expected.items())
         for i in expected_iter:
             curr = next(result)
