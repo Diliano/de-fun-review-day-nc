@@ -19,7 +19,7 @@ class TestGenerateMultiples:
         assert mults_5(1) == [5]
 
     @pytest.mark.skip
-    def test_new_func_returns_correct_number_of_itmes_in_list(self):
+    def test_new_func_returns_correct_number_of_items_in_list(self):
         mults_5 = generate_multiples(5)
         assert mults_5(3) == [5, 10, 15]
         assert mults_5(5) == [5, 10, 15, 20, 25]
