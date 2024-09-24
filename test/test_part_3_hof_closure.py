@@ -39,6 +39,19 @@ class TestCapitaliser:
         assert isinstance(result, FunctionType)
 
     @pytest.mark.skip
+    def test_enclosed_func_invoked_only_once(self):
+        count = 0
+        def example_func():
+            nonlocal count
+            count += 1
+            return 'Count is 1'
+        
+        decorated_func = capitaliser(example_func)
+        decorated_func()
+        
+        assert count == 1
+
+    @pytest.mark.skip
     def test_decorated_func_returns_capitalised_string_result(self):
         def example_func():
             return "hello world"
