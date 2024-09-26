@@ -1,4 +1,5 @@
 from src.part_1_human_resources import make_name_tags, create_poll
+from data.poll_data import nc_fruit_bowl
 import pytest
 from copy import deepcopy
 
@@ -62,3 +63,50 @@ class TestMakeNameTags:
         make_name_tags(test_input)
         # Assert
         assert test_input == copy_test_input
+
+
+class TestCreatePoll():
+    def test_returns_empty_dict_when_given_empty_list(self):
+        assert create_poll([]) == {}
+
+    def test_calculates_results_for_list_of_same_votes(self):
+        # Arrange
+        test_input = ["dog", "dog", "dog"]
+        expected = {"dog": 3}
+        # Act
+        result = create_poll(test_input)
+        # Assert
+        assert result == expected
+
+    def test_calculates_results_for_mixed_votes(self):
+        # Arrange
+        test_input = ["cake", "biscuit", "biscuit"]
+        expected = {"cake": 1, "biscuit": 2}
+        # Act
+        result = create_poll(test_input)
+        # Assert
+        assert result == expected
+
+    def test_handles_large_list_of_mixed_votes(self):
+        # Arrange
+        test_input = nc_fruit_bowl
+        expected = {
+            'apple': 276,
+            'pear': 223,
+            'banana': 263,
+            'orange': 238,
+            'lonesome plum': 1
+        }
+        # Act
+        result = create_poll(test_input)
+        # Assert
+        assert result == expected
+
+    def test_input_is_unchanged(self):
+        # Arrange
+        test_input = nc_fruit_bowl
+        test_copy_input = deepcopy(nc_fruit_bowl)
+        # Act
+        create_poll(test_input)
+        # Assert
+        assert test_input == test_copy_input

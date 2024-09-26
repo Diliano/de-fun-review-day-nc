@@ -13,6 +13,14 @@ def make_name_tags(guests):
 
     return result
 
-def create_poll():
-    # implement me
-    pass
+
+def create_poll(votes):
+    result = {}
+
+    for vote in votes:
+        if vote not in result:
+            result[vote] = 1
+        else:
+            result[vote] += 1
+
+    return result
