@@ -8,3 +8,13 @@ class VendingMachine:
 
     def credit_checker(self, price):
         return self.credit >= price
+
+    def add_stock(self, stock_to_add, position):
+        if not isinstance(stock_to_add, dict):
+            raise TypeError("Stock must be a dictionary")
+        if not isinstance(position, str):
+            raise TypeError("Position must be a string")
+        if position not in self.stock:
+            raise ValueError("Position does not exist")
+        
+        self.stock[position] = stock_to_add
