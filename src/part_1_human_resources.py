@@ -1,7 +1,17 @@
-def make_name_tags():
-    # implement me!
-    pass
+from copy import deepcopy
 
+def make_name_tags(guests):
+    result = []
+
+    copy_guests = deepcopy(guests)
+
+    for guest in copy_guests:
+        part_name_tag = (" ").join([guest["title"], guest["forename"], guest["surname"]])
+        name_tag = part_name_tag + ", " + guest["company"]
+        guest["name_tag"] = name_tag
+        result.append(guest)
+
+    return result
 
 def create_poll():
     # implement me
