@@ -1,5 +1,5 @@
 import pytest
-from src.part_2_vending_machine import VendingMachine
+from src.part_2_vending_machine import VendingMachine, InsufficientCreditError, OutOfStockError
 
 
 @pytest.fixture(scope="function")
@@ -64,7 +64,7 @@ class TestVendingMachine:
             "B": {},
             "C": {}
         }
-        
+
         """
         If stock already exists, given stock will replace it
         """
@@ -78,3 +78,76 @@ class TestVendingMachine:
             "B": {},
             "C": {}
         }
+
+    def test_purchase_item_method_raises_exception_if_given_position_is_not_a_string(self, machine):
+        test_position = 2
+        with pytest.raises(TypeError) as excinfo:
+            machine.purchase_item(test_position)
+        assert str(excinfo.value) == "Position must be a string"
+
+    def test_purchase_item_method_raises_exception_if_given_position_does_not_exist(self, machine):
+        test_position = "D"
+        with pytest.raises(ValueError) as excinfo:
+            machine.purchase_item(test_position)
+        assert str(excinfo.value) == "Position does not exist"
+
+    def test_purchase_item_method_raises_exception_if_insufficient_credits(self, machine):
+        # Arrange
+        test_stock = {"name": "mars_bar", "price": 50, "quantity": 6}
+        test_position = "A"
+        # Act
+        machine.add_stock(test_stock, test_position)
+        # Assert
+        with pytest.raises(InsufficientCreditError) as excinfo:
+            machine.purchase_item(test_position)
+        assert str(excinfo.value) == "Insufficient credit!"
+
+    def test_purchase_item_method_raises_exception_if_0_quantity_available(self, machine):
+        # Arrange
+        test_stock = {"name": "mars_bar", "price": 50, "quantity": 0}
+        test_position = "A"
+        # Act
+        machine.add_credit(60)
+        machine.add_stock(test_stock, test_position)
+        # Assert
+        with pytest.raises(OutOfStockError) as excinfo:
+            machine.purchase_item(test_position)
+        assert str(excinfo.value) == "Item out of stock"
+
+    def test_purchase_item_updates_stock_quantity_with_successful_purchase(self, machine):
+        # Arrange
+        test_stock = {"name": "mars_bar", "price": 50, "quantity": 6}
+        test_position = "A"
+        # Act
+        machine.add_stock(test_stock, test_position)
+        machine.add_credit(60)
+        machine.purchase_item(test_position)
+        # Assert
+        assert machine.stock == {
+            "A": {"name": "mars_bar", "price": 50, "quantity": 5},
+            "B": {},
+            "C": {}
+        }
+
+    def test_purchase_item_updates_credit_with_successful_purchase(self, machine):
+        # Arrange
+        test_stock = {"name": "mars_bar", "price": 50, "quantity": 6}
+        test_position = "A"
+        # Act
+        machine.add_stock(test_stock, test_position)
+        machine.add_credit(60)
+        machine.purchase_item(test_position)
+        # Assert
+        assert machine.credit == 10
+
+    def test_purchase_item_returns_item_name_with_successful_purchase(self, machine):
+        # Arrange
+        test_stock = {"name": "mars_bar", "price": 50, "quantity": 6}
+        test_position = "A"
+        expected = "mars_bar"
+        # Act
+        machine.add_stock(test_stock, test_position)
+        machine.add_credit(60)
+        result = machine.purchase_item(test_position)
+        # Assert
+        assert result == expected
