@@ -9,6 +9,13 @@ def flatten(lst, depth=1):
 
     return result
 
-def deep_entries():
-    # implement me
-    pass
+def deep_entries(dictionary):
+    result = ()
+
+    for key, value in dictionary.items():
+        if isinstance(value, dict):
+            result += ((key, deep_entries(value)),)
+        else:
+            result += ((key, value),)
+
+    return result

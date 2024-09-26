@@ -1,4 +1,4 @@
-from src.part_5_recursion import flatten
+from src.part_5_recursion import flatten, deep_entries
 
 
 class TestFlatten:
@@ -45,5 +45,46 @@ class TestFlatten:
         expected = [1, 2, 3, 4, 5, 6]
         # Act
         result = flatten(test_input, test_depth)
+        # Assert
+        assert result == expected
+
+class TestDeepEntries:
+    def test_returns_empty_tuple_when_given_empty_dict(self):
+        assert deep_entries({}) == ()
+
+    def test_returns_key_value_tuple_when_given_single_entry_dict(self):
+        assert deep_entries({"name": "Sam"}) == (("name", "Sam"),)
+
+    def test_returns_key_value_tuples_when_given_two_entries_dict(self):
+        # Arrange
+        test_input = {"name": "Sam", "fave_book": "50 Shades of Python"}
+        expected = (("name", "Sam"), ("fave_book", "50 Shades of Python"))
+        # Act
+        result = deep_entries(test_input)
+        # Act
+        assert result == expected
+
+    def test_handles_nested_dictionaries(self):
+        # Arrange
+        test_input = {"name": "Sam", "pets": {"name": "fido"}}
+        expected = (("name", "Sam"), ("pets", (("name", "fido"),)))
+        # Act
+        result = deep_entries(test_input)
+        # Assert
+        assert result == expected
+
+        # Arrange
+        test_input = {
+            "name": "Sam",
+            "pets": {"name": "Fido"},
+            "fave_book": {"title": "50 Shades of Python", "author": {"first_name": "Cody", "last_name": "Smutt"}}
+        }
+        expected = (
+            ("name", "Sam"),
+            ("pets", (("name", "Fido"),)),
+            ("fave_book", (("title", "50 Shades of Python"), ("author", (("first_name", "Cody"), ("last_name", "Smutt")))))
+        )
+        # Act
+        result = deep_entries(test_input)
         # Assert
         assert result == expected
