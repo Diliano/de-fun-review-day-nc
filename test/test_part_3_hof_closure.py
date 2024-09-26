@@ -24,67 +24,61 @@ class TestGenerateMultiples:
         assert mults_7(6) == [7, 14, 21, 28, 35, 42]
 
 
-# class TestCapitaliser:
-#     @pytest.mark.skip
-#     def test_returns_function(self):
-#         def example_func():
-#             pass
+class TestCapitaliser:
+    def test_returns_function(self):
+        def example_func():
+            pass
 
-#         result = capitaliser(example_func)
+        result = capitaliser(example_func)
 
-#         assert isinstance(result, FunctionType)
+        assert isinstance(result, FunctionType)
 
-#     @pytest.mark.skip
-#     def test_enclosed_func_invoked_only_once(self):
-#         count = 0
-#         def example_func():
-#             nonlocal count
-#             count += 1
-#             return 'Count is 1'
+    def test_enclosed_func_invoked_only_once(self):
+        count = 0
+        def example_func():
+            nonlocal count
+            count += 1
+            return 'Count is 1'
         
-#         decorated_func = capitaliser(example_func)
-#         decorated_func()
+        decorated_func = capitaliser(example_func)
+        decorated_func()
         
-#         assert count == 1
+        assert count == 1
 
-#     @pytest.mark.skip
-#     def test_decorated_func_returns_capitalised_string_result(self):
-#         def example_func():
-#             return "hello world"
+    def test_decorated_func_returns_capitalised_string_result(self):
+        def example_func():
+            return "hello world"
 
-#         decorated_func = capitaliser(example_func)
-#         result = decorated_func()
+        decorated_func = capitaliser(example_func)
+        result = decorated_func()
 
-#         assert result == "HELLO WORLD"
+        assert result == "HELLO WORLD"
 
-#     @pytest.mark.skip
-#     def test_decorated_func_returns_int_result_unchanged(self):
-#         def example_func():
-#             return 14
+    def test_decorated_func_returns_int_result_unchanged(self):
+        def example_func():
+            return 14
 
-#         decorated_func = capitaliser(example_func)
-#         result = decorated_func()
+        decorated_func = capitaliser(example_func)
+        result = decorated_func()
 
-#         assert result == 14
+        assert result == 14
 
-#     @pytest.mark.skip
-#     def test_decorated_func_returns_bool_result_unchanged(self):
-#         def example_func():
-#             return False
+    def test_decorated_func_returns_bool_result_unchanged(self):
+        def example_func():
+            return False
 
-#         decorated_func = capitaliser(example_func)
-#         result = decorated_func()
+        decorated_func = capitaliser(example_func)
+        result = decorated_func()
 
-#         assert result is False
+        assert result is False
 
-#     @pytest.mark.skip
-#     def test_function_acts_as_decorator(self):
-#         @capitaliser
-#         def example_func():
-#             return "hey hey it's decorating time"
+    def test_function_acts_as_decorator(self):
+        @capitaliser
+        def example_func():
+            return "hey hey it's decorating time"
 
-#         result = example_func()
-#         assert result == "HEY HEY IT'S DECORATING TIME"
+        result = example_func()
+        assert result == "HEY HEY IT'S DECORATING TIME"
 
 
 # class TestSecureFunction:

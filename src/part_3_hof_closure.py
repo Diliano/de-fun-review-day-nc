@@ -4,9 +4,15 @@ def generate_multiples(multiple):
     return generate_list_of_multiples
 
 
-def capitaliser():
-    # implement me
-    pass
+def capitaliser(func):
+    def decorated_func():
+        func_output = func()
+        if isinstance(func_output, str):
+            return func_output.upper()
+        else:
+            return func_output
+
+    return decorated_func
 
 
 # Advanced Challenge - Come back later!
