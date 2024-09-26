@@ -10,14 +10,12 @@ def file_data():
 
 
 class TestIndexer:
-    @pytest.mark.skip
     def test_returns_empty_generator_for_empty_string(self):
         text = ""
         result = indexer(text)
         with pytest.raises(StopIteration):
             next(result)
 
-    @pytest.mark.skip
     def test_has_leading_index_zero_for_non_empty_input(self):
         text1 = "Hello"
         text2 = "Hello Dolly"
@@ -27,7 +25,6 @@ class TestIndexer:
         assert next(indexer(text2)) == 0
         assert next(indexer(text3)) == 0
 
-    @pytest.mark.skip
     def test_correctly_indexes_single_line_text(self):
         text1 = "Hello"
         text2 = "Hello Dolly"
@@ -40,18 +37,15 @@ class TestIndexer:
         with pytest.raises(StopIteration):
             next(res1)
 
-    @pytest.mark.skip
     def test_does_not_index_leading_or_repeated_space(self):
         text = "  Space,   the final   frontier  "
 
         assert list(indexer(text)) == [2, 11, 15, 23]
 
-    @pytest.mark.skip
     def test_deals_correctly_with_newline_characters(self):
         text = """The\nEnd"""
         assert list(indexer(text)) == [0, 4]
 
-    @pytest.mark.skip
     def test_deals_correctly_with_multiline_text_read_from_file(self, file_data):
         indexed = indexer(file_data)
         listed_indexes = list(indexed)
@@ -60,51 +54,51 @@ class TestIndexer:
         assert listed_indexes[33] == 173
 
 
-class TestCoolCat:
-    @pytest.mark.skip
-    def test_works_on_single_character_strings(self):
-        result = cool_cat("A", "B", "C")
-        assert next(result) == "A"
-        assert next(result) == "B"
-        assert next(result) == "C"
-        with pytest.raises(StopIteration):
-            next(result)
+# class TestCoolCat:
+#     @pytest.mark.skip
+#     def test_works_on_single_character_strings(self):
+#         result = cool_cat("A", "B", "C")
+#         assert next(result) == "A"
+#         assert next(result) == "B"
+#         assert next(result) == "C"
+#         with pytest.raises(StopIteration):
+#             next(result)
 
-    @pytest.mark.skip
-    def test_works_on_single_item_lists(self):
-        result = cool_cat(["A"], ["B"], ["C"])
-        assert next(result) == "A"
-        assert next(result) == "B"
-        assert next(result) == "C"
-        with pytest.raises(StopIteration):
-            next(result)
+#     @pytest.mark.skip
+#     def test_works_on_single_item_lists(self):
+#         result = cool_cat(["A"], ["B"], ["C"])
+#         assert next(result) == "A"
+#         assert next(result) == "B"
+#         assert next(result) == "C"
+#         with pytest.raises(StopIteration):
+#             next(result)
 
-    @pytest.mark.skip
-    def test_works_on_single_item_dicts(self):
-        result = cool_cat({"A": 1}, {"B": 2}, {"C": 3})
-        assert next(result) == ("A", 1)
-        assert next(result) == ("B", 2)
-        assert next(result) == ("C", 3)
-        with pytest.raises(StopIteration):
-            next(result)
+#     @pytest.mark.skip
+#     def test_works_on_single_item_dicts(self):
+#         result = cool_cat({"A": 1}, {"B": 2}, {"C": 3})
+#         assert next(result) == ("A", 1)
+#         assert next(result) == ("B", 2)
+#         assert next(result) == ("C", 3)
+#         with pytest.raises(StopIteration):
+#             next(result)
 
-    @pytest.mark.skip
-    def test_works_on_multi_char_strings(self):
-        result = list(cool_cat("ABC", "DEF", "HIJ"))
-        assert result == ["A", "B", "C", "D", "E", "F", "H", "I", "J"]
+#     @pytest.mark.skip
+#     def test_works_on_multi_char_strings(self):
+#         result = list(cool_cat("ABC", "DEF", "HIJ"))
+#         assert result == ["A", "B", "C", "D", "E", "F", "H", "I", "J"]
 
-    @pytest.mark.skip
-    def test_works_on_multi_item_lists(self):
-        result = list(cool_cat(["A", "B", "C"], ["D", "E"], ["F", "G", "H"]))
-        assert result == ["A", "B", "C", "D", "E", "F", "G", "H"]
+#     @pytest.mark.skip
+#     def test_works_on_multi_item_lists(self):
+#         result = list(cool_cat(["A", "B", "C"], ["D", "E"], ["F", "G", "H"]))
+#         assert result == ["A", "B", "C", "D", "E", "F", "G", "H"]
 
-    @pytest.mark.skip
-    def test_works_on_multi_item_dicts(self):
-        result = cool_cat(
-            {"A": 1, "B": 2, "C": 3}, {"x": 4}, {"y": 96, "z": 47}, {"P": 456}
-        )
-        expected = {"A": 1, "B": 2, "C": 3, "x": 4, "y": 96, "z": 47, "P": 456}
-        expected_iter = iter(expected.items())
-        for i in expected_iter:
-            curr = next(result)
-            assert curr == i
+#     @pytest.mark.skip
+#     def test_works_on_multi_item_dicts(self):
+#         result = cool_cat(
+#             {"A": 1, "B": 2, "C": 3}, {"x": 4}, {"y": 96, "z": 47}, {"P": 456}
+#         )
+#         expected = {"A": 1, "B": 2, "C": 3, "x": 4, "y": 96, "z": 47, "P": 456}
+#         expected_iter = iter(expected.items())
+#         for i in expected_iter:
+#             curr = next(result)
+#             assert curr == i
