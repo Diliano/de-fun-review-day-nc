@@ -47,6 +47,14 @@ class TestMakeNameTags:
     def test_returns_an_empty_list_when_given_an_empty_list(self):
         assert make_name_tags([]) == []
 
+    def test_returned_list_is_a_new_list(self):
+        # Arrange
+        test_input = []
+        # Act
+        result = make_name_tags(test_input)
+        # Assert
+        assert result is not test_input
+
     def test_adds_formatted_name_tag_to_guest_dictionaries(self, guests, updated_guests):
         # Arrange
         test_input = guests
