@@ -37,21 +37,6 @@ class TestVendingMachine:
         machine.add_credit(36)
         assert machine.credit_checker(44) is False
 
-    def test_add_stock_method_raises_exception_if_given_stock_is_not_a_dict(self, machine):
-        with pytest.raises(TypeError) as excinfo:
-            machine.add_stock("Mars bar", "A")
-        assert str(excinfo.value) == "Stock must be a dictionary"
-
-    def test_add_stock_method_raises_exception_if_given_position_is_not_a_string(self, machine):
-        with pytest.raises(TypeError) as excinfo:
-            machine.add_stock({}, 2)
-        assert str(excinfo.value) == "Position must be a string"
-
-    def test_add_stock_method_raises_exception_if_given_position_does_not_exist(self, machine):
-        with pytest.raises(ValueError) as excinfo:
-            machine.add_stock({}, "D")
-        assert str(excinfo.value) == "Position does not exist"
-
     def test_add_stock_method_adds_given_stock_at_given_position(self, machine):
         # Arrange
         test_stock = {"name": "mars_bar", "price": 50, "quantity": 6}
@@ -65,30 +50,38 @@ class TestVendingMachine:
             "C": {}
         }
 
-        """
-        If stock already exists, given stock will replace it
-        """
+    def test_add_stock_method_replaces_any_existing_stock(self, machine):
         # Arrange
+        test_stock = {"name": "mars_bar", "price": 50, "quantity": 6}
+        test_position = "A"
         replacement_stock = {"name": "snickers_bar", "price": 60, "quantity": 3}
-        # Act
+        # Act & Assert
+        machine.add_stock(test_stock, test_position)
+        assert machine.stock == {
+            "A": {"name": "mars_bar", "price": 50, "quantity": 6},
+            "B": {},
+            "C": {}
+        }
         machine.add_stock(replacement_stock, test_position)
-        # Assert
         assert machine.stock == {
             "A": {"name": "snickers_bar", "price": 60, "quantity": 3},
             "B": {},
             "C": {}
         }
 
-    def test_purchase_item_method_raises_exception_if_given_position_is_not_a_string(self, machine):
-        test_position = 2
+    def test_add_stock_method_raises_exception_if_given_stock_is_not_a_dict(self, machine):
         with pytest.raises(TypeError) as excinfo:
-            machine.purchase_item(test_position)
+            machine.add_stock("Mars bar", "A")
+        assert str(excinfo.value) == "Stock must be a dictionary"
+
+    def test_add_stock_method_raises_exception_if_given_position_is_not_a_string(self, machine):
+        with pytest.raises(TypeError) as excinfo:
+            machine.add_stock({}, 2)
         assert str(excinfo.value) == "Position must be a string"
 
-    def test_purchase_item_method_raises_exception_if_given_position_does_not_exist(self, machine):
-        test_position = "D"
+    def test_add_stock_method_raises_exception_if_given_position_does_not_exist(self, machine):
         with pytest.raises(ValueError) as excinfo:
-            machine.purchase_item(test_position)
+            machine.add_stock({}, "D")
         assert str(excinfo.value) == "Position does not exist"
 
     def test_purchase_item_method_raises_exception_if_insufficient_credits(self, machine):
@@ -151,3 +144,15 @@ class TestVendingMachine:
         result = machine.purchase_item(test_position)
         # Assert
         assert result == expected
+
+    def test_purchase_item_method_raises_exception_if_given_position_is_not_a_string(self, machine):
+        test_position = 2
+        with pytest.raises(TypeError) as excinfo:
+            machine.purchase_item(test_position)
+        assert str(excinfo.value) == "Position must be a string"
+
+    def test_purchase_item_method_raises_exception_if_given_position_does_not_exist(self, machine):
+        test_position = "D"
+        with pytest.raises(ValueError) as excinfo:
+            machine.purchase_item(test_position)
+        assert str(excinfo.value) == "Position does not exist"
