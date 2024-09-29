@@ -1,4 +1,4 @@
-from src.part_4_iterators import indexer, cool_cat
+from src.part_4_iterators import indexer, cool_cat, CoolCatIterator
 import pytest
 
 
@@ -89,6 +89,57 @@ class TestCoolCat:
 
     def test_works_on_multi_item_dicts(self):
         result = cool_cat(
+            {"A": 1, "B": 2, "C": 3}, {"x": 4}, {"y": 96, "z": 47}, {"P": 456}
+        )
+        expected = {"A": 1, "B": 2, "C": 3, "x": 4, "y": 96, "z": 47, "P": 456}
+        expected_iter = iter(expected.items())
+        for i in expected_iter:
+            curr = next(result)
+            assert curr == i
+
+
+class TestCoolCatIterator:
+    def test_is_an_iterator(self):
+        assert hasattr(CoolCatIterator, "__next__")
+
+    def test_iter_method_returns_self(self):
+        test_iterator = CoolCatIterator("A", "B", "C")
+        assert iter(test_iterator) == test_iterator
+
+    def test_handles_single_character_strings(self):
+        test_iterator = CoolCatIterator("A", "B", "C")
+        assert next(test_iterator) == "A"
+        assert next(test_iterator) == "B"
+        assert next(test_iterator) == "C"
+        with pytest.raises(StopIteration):
+            next(test_iterator)
+
+    def test_handles_single_item_lists(self):
+        test_iterator = CoolCatIterator(["A"], ["B"], ["C"])
+        assert next(test_iterator) == "A"
+        assert next(test_iterator) == "B"
+        assert next(test_iterator) == "C"
+        with pytest.raises(StopIteration):
+            next(test_iterator)
+
+    def test_handles_single_item_dicts(self):
+        test_iterator = CoolCatIterator({"A": 1}, {"B": 2}, {"C": 3})
+        assert next(test_iterator) == ("A", 1)
+        assert next(test_iterator) == ("B", 2)
+        assert next(test_iterator) == ("C", 3)
+        with pytest.raises(StopIteration):
+            next(test_iterator)
+
+    def test_handles_multi_char_strings(self):
+        result = list(CoolCatIterator("ABC", "DEF", "HIJ"))
+        assert result == ["A", "B", "C", "D", "E", "F", "H", "I", "J"]
+
+    def test_handles_multi_item_lists(self):
+        result = list(CoolCatIterator(["A", "B", "C"], ["D", "E"], ["F", "G", "H"]))
+        assert result == ["A", "B", "C", "D", "E", "F", "G", "H"]
+
+    def test_handles_multi_item_dicts(self):
+        result = CoolCatIterator(
             {"A": 1, "B": 2, "C": 3}, {"x": 4}, {"y": 96, "z": 47}, {"P": 456}
         )
         expected = {"A": 1, "B": 2, "C": 3, "x": 4, "y": 96, "z": 47, "P": 456}
