@@ -1,3 +1,5 @@
-# de-fun-review-day
+# Data Engineering Bootcamp - Review Day 1
 
-Instructions for this repo can be found [here](https://l2c.northcoders.com/courses/de2-fun/review)
+## Overview
+
+This repository contains work completed as part of Review Day 1 during my Data Engineering Bootcamp. 
